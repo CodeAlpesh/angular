@@ -47,4 +47,4 @@
 - The most negative part of using prop/event binding approach to share input/output is having hierachchal connection.
   As distance increase, fragile the code. If component hierarchy breaks for any reson, communication is broken.   
 
-
+- Alternatively you can create ServerElement model to encapsulate/simplify the code.

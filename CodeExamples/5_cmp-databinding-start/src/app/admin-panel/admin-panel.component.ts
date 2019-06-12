@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ServerElement } from '../shared/server-element.model';
 
 @Component({
   selector: 'app-admin-panel',
@@ -9,7 +10,7 @@ export class AdminPanelComponent implements OnInit {
 
   newServerName = '';
   newServerContent = '';
-  @Output() serverCreated = new EventEmitter<{type: string, name: string, content: string}>();
+  @Output() serverCreated = new EventEmitter<ServerElement>();
 
   constructor() { }
 
@@ -17,11 +18,11 @@ export class AdminPanelComponent implements OnInit {
   }
 
   onAddServer() {
-    this.serverCreated.emit({type: 'server', name: this.newServerName, content: this.newServerContent});
+    this.serverCreated.emit(new ServerElement('server', this.newServerName,this.newServerContent));
   }
 
   onAddBlueprint() {
-    this.serverCreated.emit({type: 'blueprint', name: this.newServerName, content: this.newServerContent});
+    this.serverCreated.emit(new ServerElement('blueprint', this.newServerName,this.newServerContent));
   }
 
 }
