@@ -1,0 +1,50 @@
+- Created components admin-panel, server-list.
+- This is how app.component.html looks now.
+
+<div class="container">
+  <app-admin-panel (serverCreated)="onServerCreated($event)"></app-admin-panel>
+  <hr>
+  <app-server-element *ngFor="let serverElement of serverElements" [element]="serverElement"></app-server-element>
+</div>
+
+- app component maintains list of server elements;
+- Presentation of each component is deligated to app-server-element component.
+
+- How do we pass serverelement details from app to app-server-element.
+  Use property binding. 
+  1. Define a custom property named element for the component and pass it from parent.
+   <app-server-element ... [element]="serverElement"> 
+
+  2. Define @Input() type with name as "element" in .ts file. Can override using prop binding.
+   @Input() element: {servertype: string, name: string, content: string};
+
+  3. Use this attribute in componnet's template file.
+
+- New server/blueprint will be creted in admin-panel component. How will it be handled?
+  Idea is whenever a new serverelement is created, it will shared with parent (app) componnet. 
+  App compponet will save them andd pass each object to server-element component. i.e. Build thecommunication hierarchy. 
+  
+  1. Define a custom event on admin panel. Parent component will be notified, whenever server is created.
+
+      <app-admin-panel (serverCreated)="onServerCreated($event)"></app-admin-panel>
+
+    Data will be shared using th $event, which you can define in the admin-panel(source) component.
+
+  2. Create @Output() type attribute in admin-panle component.
+
+    @Output() serverCreated = new EventEmitter<{type: string, name: string, content: string}>();
+
+    On some event exa:. button click within admin-panel component, emit the custom event from @Output type attr.
+
+    onAddServer() {
+      this.serverCreated.emit({type: 'server', name: this.newServerName, content: this.newServerContent});
+    }
+
+    onAddBlueprint() {
+      this.serverCreated.emit({type: 'blueprint', name: this.newServerName, content: this.newServerContent});
+    }
+
+- The most negative part of using prop/event binding approach to share input/output is having hierachchal connection.
+  As distance increase, fragile the code. If component hierarchy breaks for any reson, communication is broken.   
+
+
