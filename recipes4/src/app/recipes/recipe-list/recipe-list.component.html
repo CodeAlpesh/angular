@@ -9,8 +9,7 @@
         <div class="list-group">
             <app-recipe-item 
                 *ngFor="let eachRecipe of recipes" 
-                [recipe]="eachRecipe"
-                (click)="onRecipeSelected(eachRecipe)">
+                [recipe]="eachRecipe">
             </app-recipe-item>
         </div>
     </div>
