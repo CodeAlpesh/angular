@@ -12,6 +12,7 @@ export class EditServerComponent implements OnInit {
   server: {id: number, name: string, status: string};
   serverName = '';
   serverStatus = '';
+  allowEdit = false;
   errorMessage: string = null;
 
   constructor(
@@ -38,6 +39,11 @@ export class EditServerComponent implements OnInit {
     this.route.queryParams.subscribe(
       (params: Params) => {
         const allowEdit = params['allowEdit'];
+        if(allowEdit === '1') {
+          this.allowEdit = true;
+        } else {
+          this.allowEdit = false;
+        }
       }
     );
 

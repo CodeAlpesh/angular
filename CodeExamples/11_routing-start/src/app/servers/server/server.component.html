@@ -1,4 +1,5 @@
 <div *ngIf='server'>
     <h5>{{ server.name }}</h5>
     <p>Server status is {{ server.status }}</p>
+    <button class="btn btn-primary" (click)="onEditServer()">Edit</button>
 </div>
