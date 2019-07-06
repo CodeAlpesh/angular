@@ -8,18 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
   
   title = 'recipes4';
-  selectedFeature = '';
-
-  onNavigation(featureName: string) {
-    this.selectedFeature = featureName;
-  }
-
-  showRecipesComponent() {
-    return !this.selectedFeature || this.selectedFeature === 'recipes'; 
-  }
-
-  showShoppingListComponent() {
-    return this.selectedFeature === 'shopping-list';
-  }
 
 }
