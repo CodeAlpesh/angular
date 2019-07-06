@@ -1,12 +1,10 @@
 import { Recipe } from './recipe.model';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
-    
-    recipeSelected = new EventEmitter<Recipe>();
 
     private recipes: Recipe[] = [
         new Recipe(
@@ -47,6 +45,18 @@ export class RecipeService {
 
     getRecipes() {
         return this.recipes.slice();
+    }
+
+    getRecipe(index: number) {
+        if(index < this.recipes.length) {
+            return this.recipes[index];
+        } else {
+            return null;
+        }
+
+        // return this.recipes.slice(index)[0]; 
+        // This will create a shallow copy having ref of same Recipe object. 
+        // Returning by index will also return the Recipe object reference.
     }
 
     addIngredients(ingredients: Ingredient[]) {

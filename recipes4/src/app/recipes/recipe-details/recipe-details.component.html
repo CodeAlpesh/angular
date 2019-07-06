@@ -1,3 +1,8 @@
+<div *ngIf="!recipe">
+  <h3>Please select a recipe.</h3>
+</div>
+
+<div *ngIf="recipe">
 <div class="row">
   <div class="col-xs-12">
     <img 
@@ -40,4 +45,5 @@
       </li>
     </ul>
   </div>
+</div>
 </div>
