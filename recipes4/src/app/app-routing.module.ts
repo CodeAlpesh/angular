@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { identifierModuleUrl } from '@angular/compiler';
 import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.component';
 import { RecipeResolver } from './recipes/reipe-resolver-guard.service';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
