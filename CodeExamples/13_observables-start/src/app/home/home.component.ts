@@ -18,12 +18,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       let count = 0;
       setInterval(() => {
         observer.next(count);
+        if(count == 3) {
+          observer.complete();
+        }
+        if(count > 3) {
+          observer.error(new Error("Count is greater then 3"));
+        }
         count++;
       }, 1000);
   });
-  this.intervalSunscription = myObservable.subscribe((data: number) => {
-    console.log(data);
-  })
+  this.intervalSunscription = myObservable.subscribe(
+    (data: number) => {
+      console.log(data);
+    },
+    (error: Error) => {
+      console.log('ERROR: ' + error.message);
+    },
+    () => {
+      console.log("Completed ...");  
+    })
 
     /*
     this.intervalSunscription = interval(2000).subscribe(
