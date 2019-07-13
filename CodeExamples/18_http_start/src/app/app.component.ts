@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
     console.log(postData);
     // Send Http request
     this.http
-      .post(
+      .post<{name : string}>(
         'https://recipebook-36c22.firebaseio.com/posts.json',
         postData
       )
@@ -38,10 +39,9 @@ export class AppComponent implements OnInit {
   }
 
   fetchPosts() {
-    this.http.get('https://recipebook-36c22.firebaseio.com/posts.json')
-    .pipe(map(
-      (responseData) => {
-        const postsArray = [];
+    this.http.get<{ [key: string]: Post}>('https://recipebook-36c22.firebaseio.com/posts.json')
+    .pipe(map((responseData) => {
+        const postsArray: Post[] = [];
         for(const key in responseData) {
           if(responseData.hasOwnProperty(key)) {
             const post = {...responseData[key], id:key};
