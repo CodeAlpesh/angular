@@ -10,6 +10,7 @@ import { Post } from './post.model';
 })
 export class AppComponent implements OnInit {
   loadedPosts:Post[] = [];
+  isFetching = false;
 
   constructor(private http: HttpClient) {}
 
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   fetchPosts() {
+    this.isFetching = true;
     this.http.get<{ [key: string]: Post}>('https://recipebook-36c22.firebaseio.com/posts.json')
     .pipe(map((responseData) => {
         const postsArray: Post[] = [];
@@ -54,7 +56,12 @@ export class AppComponent implements OnInit {
     .subscribe(
       (responseData: Post[]) => {
         console.log(responseData);
-        this.loadedPosts = responseData;  
+        this.loadedPosts = responseData;
+        this.isFetching = false;  
+      },
+      (error) => {
+        console.log(error);
+        this.isFetching = false;
       }
     )
   }
