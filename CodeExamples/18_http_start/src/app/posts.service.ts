@@ -7,7 +7,7 @@ import { Post } from './post.model';
 
 @Injectable({providedIn : 'root'})
 export class PostsService {
-    
+   
     postSaved = new Subject<{name: string}>();
 
     constructor(private httpClient: HttpClient) {}
@@ -40,7 +40,10 @@ export class PostsService {
                     return postsArray;
                 }
             ));
-
     }
 
+    deleteAllPosts() {
+        return this.httpClient
+            .delete('https://recipebook-36c22.firebaseio.com/posts.json')
+    }
 }
