@@ -52,13 +52,17 @@
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3" >
       <p *ngIf="isFetching">Loading ...</p>
-      <p *ngIf="!isisFetching && loadedPosts.length === 0">No posts available!</p>
+      <p *ngIf="!isisFetching && !errorMessage && loadedPosts.length === 0">No posts available!</p>
       <ul *ngIf="!isisFetching && loadedPosts.length >=  1" class="list-group" >
         <li class="list-group-item" *ngFor="let post of loadedPosts">
           <h4>{{post.title}}</h4>
           <p>{{post.content}}</p>
         </li>
       </ul>
+      <div class="alert alert-danger" *ngIf="errorMessage">
+        <h4>An Error Occured!</h4>
+        <p>{{errorMessage}}</p>
+      </div>
     </div>
   </div>
 </div>

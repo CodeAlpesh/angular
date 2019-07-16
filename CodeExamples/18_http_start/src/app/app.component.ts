@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from './post.model';
 import { PostsService } from './posts.service';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   loadedPosts:Post[] = [];
   isFetching = false;
+  errorMessage: string;
   postsServiceSubscription: Subscription;
 
   constructor(private postsService: PostsService) {}
@@ -20,6 +22,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postsServiceSubscription =  this.postsService.postSaved.subscribe(
       (saveResponse) => {
         this.onPostCreated(saveResponse)
+      },
+      (errorResponse: HttpErrorResponse ) => {
+        this.errorMessage = errorResponse.message;
       }
     )
   }
@@ -44,8 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadedPosts = [];
         console.log(response);
       }, 
-      (error) => {
-        console.log(error );
+      (errorResponse: HttpErrorResponse ) => {
+        this.errorMessage = errorResponse.message;
       }
     );
   }
@@ -57,9 +62,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadedPosts = posts;
         this.isFetching = false;
       },
-      (error) => {
-        console.log(error);
+      (errorResponse: HttpErrorResponse ) => {
+        // console.log(errorResponse);
         this.isFetching = false;
+        this.errorMessage = errorResponse.error.error;
+        // this.errorMessage = errorResponse.message;
       }
     );    
   }
