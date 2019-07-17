@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -27,7 +27,17 @@ export class PostsService {
 
     fetchAllPosts() {
         return this.httpClient
-            .get<{ [key: string]: Post}>('https://recipebook-36c22.firebaseio.com/posts.json')
+            .get<{ [key: string]: Post}>(
+                'https://recipebook-36c22.firebaseio.com/posts.json',
+                {
+                    headers : new HttpHeaders(
+                        {
+                            "Custome-Header1" : "val1", 
+                            "Custome-Header2" : "val2"
+                        }),
+                    params : new HttpParams().set('print', 'pretty')
+                }
+            )
             .pipe(
                 map((responseData) => {
                     const postsArray: Post[] = [];
@@ -42,8 +52,8 @@ export class PostsService {
             ));
     }
 
-    deleteAllPosts() {
+    deleteAllPosts() {  
         return this.httpClient
-            .delete('https://recipebook-36c22.firebaseio.com/posts.json')
+            .delete('https://recipebook-36c22.firebaseio.com/posts.json', { responseType : "text" })
     }
 }
