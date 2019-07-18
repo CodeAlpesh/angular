@@ -59,6 +59,10 @@ export class RecipeService {
         // Returning by index will also return the Recipe object reference.
     }
 
+    setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes;
+    }
+
     addIngredients(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
