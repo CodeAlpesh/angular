@@ -5,8 +5,6 @@ import { map, tap } from 'rxjs/operators';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
 
-
-
 @Injectable({providedIn: 'root'})
 export class DataStorageService {
 
@@ -27,7 +25,7 @@ export class DataStorageService {
     }
 
     fetchData() {
-        this.http.
+        return this.http.
             get<Recipe[]>('https://recipebook-36c22.firebaseio.com/recipes.json')
             .pipe(
                 tap((recipes) => {
@@ -42,14 +40,10 @@ export class DataStorageService {
                     });
                 })
                 ,tap((recipes) => {
-                    console.log(recipes);    
-                })
-            )
-            .subscribe(
-                (recipes) => {
+                    console.log(recipes);
                     this.recipeService.setRecipes(recipes);
-                }
-            )
+                })
+            );
             
     }
 }

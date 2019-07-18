@@ -37,7 +37,7 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [ ShoppingListService, RecipeService, RecipeResolver ],
+  providers: [ ShoppingListService, RecipeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

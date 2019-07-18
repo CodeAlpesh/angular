@@ -20,7 +20,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onFetchData() {
-    this.dataService.fetchData();
+    this.dataService.fetchData().subscribe();
+    //Not intesersted in processing the response. It's already set in service and notified via Subject.
   }
 
 }
