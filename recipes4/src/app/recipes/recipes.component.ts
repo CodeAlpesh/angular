@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RecipeService } from './recipe.service';
+import { RecipeService, AppError } from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
@@ -10,7 +10,7 @@ import { RecipeService } from './recipe.service';
 })
 export class RecipesComponent implements OnInit, OnDestroy {
 
-  error = null;
+  error: AppError = null;
   recipesChangedSubscription: Subscription;
   // recipesDataSubscriptin: Subscription;
 

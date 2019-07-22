@@ -4,13 +4,15 @@ import { Ingredient } from '../shared/ingredient.model';
 import { Subject } from 'rxjs';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
+export interface AppError {
+    error: string,
+    message: string,
+    status: string
+}
+
 export interface RecipesResolved {
     recipes: Recipe[],
-    error: {
-        error: string,
-        message: string,
-        status: string
-    }
+    error: AppError 
 };
 
 @Injectable()
