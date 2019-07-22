@@ -4,17 +4,24 @@ import { Ingredient } from '../shared/ingredient.model';
 import { Subject } from 'rxjs';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
+export interface RecipesResolved {
+    recipes: Recipe[],
+    error: {
+        error: string,
+        message: string,
+        status: string
+    }
+};
+
 @Injectable()
 export class RecipeService {
 
     recipesChanged = new Subject<Recipe[]>();
 
-    private recipesData : { recipes: Recipe[], error: {error: string, message: string, status: string} } = { 
+    private recipesData : RecipesResolved = { 
         recipes : [], 
         error: null
     }
-
-    // private recipes: Recipe[] = [];
     
     // private recipes: Recipe[] = [
     //     new Recipe(
@@ -69,26 +76,22 @@ export class RecipeService {
         // Returning by index will also return the Recipe object reference.
     }
 
-    setRecipes(recipes: Recipe[]) {
-        this.recipesData.recipes = recipes;
-        this.recipesData.error = null;
+    setRecipes(recipeData: RecipesResolved) {
+        this.recipesData = recipeData;
         this.recipesChanged.next(this.recipesData.recipes);
     }
 
-    setRecipesError(error: string) {
-        this.recipesData.error.error = error;
-        this.recipesData.recipes = [];
+    setRecipesError(recipeData: RecipesResolved) {
+        this.recipesData = recipeData;
         this.recipesChanged.next(this.recipesData.recipes);
     }
 
     getRecipesError() {
-        return this.recipesData.error.error;
+        return this.recipesData.error;
     }
 
     addIngredients(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
-
-    getErr
 
 }

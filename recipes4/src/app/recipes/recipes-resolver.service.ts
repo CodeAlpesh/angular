@@ -19,6 +19,7 @@ export class ResipesResolverService implements Resolve<Recipe[]> {
         return this.dataStorageService.fetchData().pipe(
             catchError((error) => {
                 
+                console.log(error);
                 // if error is returned then resolver will stop propogation and route is not loaded. App crashes. 
                 // TODO: Not sure whether it's unsubscribes or not. Check when login/authentication is implemeted. 
                 // return throwError(error);

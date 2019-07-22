@@ -10,7 +10,7 @@ import { RecipeService } from './recipe.service';
 })
 export class RecipesComponent implements OnInit, OnDestroy {
 
-  errorMessage: string = null;
+  error = null;
   recipesChangedSubscription: Subscription;
   // recipesDataSubscriptin: Subscription;
 
@@ -24,10 +24,10 @@ export class RecipesComponent implements OnInit, OnDestroy {
     //chack Option2: 
     this.recipesChangedSubscription = this.recipeService.recipesChanged.subscribe(
       (data) => {
-        this.errorMessage = this.recipeService.getRecipesError();
+        this.error = this.recipeService.getRecipesError();
       }
     )
-    this.errorMessage = this.recipeService.getRecipesError();
+    this.error = this.recipeService.getRecipesError();
 
     //Option2: Let resolver get the data and subscribe to receive data. May do it if data is must for this component.
     // Will not be invoked when error occurs in resolver.

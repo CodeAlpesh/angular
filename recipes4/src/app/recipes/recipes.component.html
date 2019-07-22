@@ -1,6 +1,8 @@
-<div class="row">
+<div class="row" *ngIf="error">
   <div class="alert alert-danger">
-    {{errorMessage}}
+    <p>{{error.error}}</p>
+    <p>{{error.message}}</p>
+    <p>{{error.status}}</p>
   </div>
 </div>
 <div class="row">
