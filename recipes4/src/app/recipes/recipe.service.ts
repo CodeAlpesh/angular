@@ -1,14 +1,20 @@
 import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
 
     recipesChanged = new Subject<Recipe[]>();
-    private recipes: Recipe[] = [];
+
+    private recipesData : { recipes: Recipe[], error: {error: string, message: string, status: string} } = { 
+        recipes : [], 
+        error: null
+    }
+
+    // private recipes: Recipe[] = [];
     
     // private recipes: Recipe[] = [
     //     new Recipe(
@@ -48,12 +54,12 @@ export class RecipeService {
     constructor(private slService: ShoppingListService) {}
 
     getRecipes() {
-        return this.recipes.slice();
+        return this.recipesData.recipes.slice();
     }
 
     getRecipe(index: number) {
-        if(index < this.recipes.length) {
-            return this.recipes[index];
+        if(index < this.recipesData.recipes.length) {
+            return this.recipesData.recipes[index];
         } else {
             return null;
         }
@@ -64,12 +70,25 @@ export class RecipeService {
     }
 
     setRecipes(recipes: Recipe[]) {
-        this.recipes = recipes;
-        this.recipesChanged.next(this.recipes);
+        this.recipesData.recipes = recipes;
+        this.recipesData.error = null;
+        this.recipesChanged.next(this.recipesData.recipes);
+    }
+
+    setRecipesError(error: string) {
+        this.recipesData.error.error = error;
+        this.recipesData.recipes = [];
+        this.recipesChanged.next(this.recipesData.recipes);
+    }
+
+    getRecipesError() {
+        return this.recipesData.error.error;
     }
 
     addIngredients(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients);
     }
+
+    getErr
 
 }
