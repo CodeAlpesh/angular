@@ -67,6 +67,29 @@ export class AuthService {
         this.router.navigate(['/auth']);
     }
 
+    autoLogin() {
+        const userData: {
+            email: string,
+            userId: string,
+            _authToken: string,
+            _tokenExpiryDate: string    
+        } = JSON.parse(localStorage.getItem('userData'));
+        if(!userData) {
+            return;
+        }
+
+        const loadedUser = new User(
+            userData.email, 
+            userData.userId, 
+            userData._authToken, 
+            new Date(+userData._tokenExpiryDate));
+        
+        if(loadedUser.token) {
+            this.user.next(loadedUser);
+            this.router.navigate(['/recipes']);
+        }
+    }
+
     private handleAuthResponse(responseData: AuthResponse) {
         const user = new User(
             responseData.email,
@@ -75,6 +98,7 @@ export class AuthService {
             new Date(new Date().getTime() + (+responseData.expiresIn * 1000))
         );
         this.user.next(user);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 
     private handleError(errorResponse: HttpErrorResponse) {
