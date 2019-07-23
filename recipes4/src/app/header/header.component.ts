@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +10,15 @@ import { DataStorageService } from '../shared/data-storage.service';
 export class HeaderComponent implements OnInit {
 
   collapsed = true;
+  isAuthenticated = false;
 
-  constructor(private dataService: DataStorageService) {}
+  constructor(private dataService: DataStorageService, private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.user.
+      subscribe((user) => {
+        this.isAuthenticated = !!user;
+      })
   }
 
   onSaveData() {

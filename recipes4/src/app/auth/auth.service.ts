@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject, of } from 'rxjs';
+import { User } from './user.model';
 
 export interface AuthResponse {
     kind: string,
@@ -16,6 +17,7 @@ export interface AuthResponse {
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
+    user = new Subject<User>();
     constructor(private http: HttpClient) {}
 
     signin(userEmail:string, userPassword:string) {
@@ -29,7 +31,15 @@ export class AuthService {
                 }
             ).
             pipe(
-                catchError(this.handleError)
+                catchError(this.handleError),
+                tap(responseData => {
+                    this.handleAuthResponse(responseData);
+                })
+                //The AuthResponse is still being sent to the subscriber. Override the returnvalue using map.
+                // ,
+                // map((data)=> {
+                //   return of({auth: true})  
+                // })
             );
     }
 
@@ -44,8 +54,21 @@ export class AuthService {
                 }
             ).
             pipe(
-                catchError(this.handleError)
+                catchError(this.handleError),
+                tap(responseData => {
+                    this.handleAuthResponse(responseData);
+                })
             );
+    }
+
+    handleAuthResponse(responseData: AuthResponse) {
+        const user = new User(
+            responseData.email,
+            responseData.localId,
+            responseData.idToken,
+            new Date(new Date().getTime() + (+responseData.expiresIn * 1000))
+        );
+        this.user.next(user);
     }
 
     handleError(errorResponse: HttpErrorResponse) {
