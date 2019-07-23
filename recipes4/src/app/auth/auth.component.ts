@@ -38,11 +38,24 @@ export class AuthComponent implements OnInit {
           (response) => {
             console.log(response);
             this.isLoading = false;
+            this.error = null;
           },
-          (error) => {
-            this.error = error;
+          (errorResponse) => {
+            console.log(errorResponse);
+            this.error = "Unknown error occured";
+
+            if(errorResponse.error && errorResponse.error.error) {
+              console.log(errorResponse.error.error.message);
+              switch(errorResponse.error.error.message) {
+                case "EMAIL_EXISTS":
+                  this.error = "Email already registered. Try another one."
+                  break;
+                case "OPERATION_NOT_ALLOWED":
+                  this.error = "Try other way of login." 
+                  break;
+              }
+            } 
             this.isLoading = false;
-            console.log(error);
           }
         )
     }
