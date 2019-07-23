@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 export interface AuthResponse {
     kind: string,
@@ -18,7 +19,7 @@ export interface AuthResponse {
 export class AuthService {
 
     user = new BehaviorSubject<User>(null);
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     signin(userEmail:string, userPassword:string) {
         return this.http
@@ -61,7 +62,12 @@ export class AuthService {
             );
     }
 
-    handleAuthResponse(responseData: AuthResponse) {
+    signout() {
+        this.user.next(null);
+        this.router.navigate(['/auth']);
+    }
+
+    private handleAuthResponse(responseData: AuthResponse) {
         const user = new User(
             responseData.email,
             responseData.localId,
@@ -71,7 +77,7 @@ export class AuthService {
         this.user.next(user);
     }
 
-    handleError(errorResponse: HttpErrorResponse) {
+    private handleError(errorResponse: HttpErrorResponse) {
         let error = "Unknown error occured";
 
         if(errorResponse.error && errorResponse.error.error) {
