@@ -18,13 +18,12 @@ export class AuthGuard implements CanActivate {
         //Router will subscribe to this Observable and will wait for it to get resolved. 
         return this.authService.user.pipe(
             map( (user) => {
-                return !!user;
-            }),
-            tap((isAuthenticated) => {
+                const isAuthenticated = !!user; 
                 if(isAuthenticated) {
                     return true;
+                } else {
+                    return this.router.createUrlTree(['/auth']);
                 }
-                this.router.navigate(['/auth']);
             })
         );
     }
