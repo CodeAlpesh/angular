@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 
@@ -18,7 +18,9 @@ export class AuthGuard implements CanActivate {
         //Router will subscribe to this Observable and will wait for it to get resolved. 
         return this.authService.user.pipe(
             map( (user) => {
-                const isAuthenticated = !!user; 
+                return !!user;
+            }),
+            tap((isAuthenticated) => {
                 if(isAuthenticated) {
                     return true;
                 }
