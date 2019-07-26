@@ -85,24 +85,25 @@ export class AuthService {
             return;
         }
 
-        const tokenExpiryDaye = new Date(+userData._tokenExpiryDate);
+        const tokenExpiryDate = new Date(userData._tokenExpiryDate);
         const loadedUser = new User(
             userData.email, 
             userData.userId, 
             userData._authToken, 
-            tokenExpiryDaye);
+            tokenExpiryDate);
         
         if(loadedUser.token) {
             this.user.next(loadedUser);
             this.router.navigate(['/recipes']);
         
-            const timeSeconds = tokenExpiryDaye.getTime() - new Date().getTime(); 
+            const timeSeconds = tokenExpiryDate.getTime() - new Date().getTime(); 
             this.autoLogout(timeSeconds);
         }
         
     }
 
     autoLogout(expiryDurationMS: number) {
+        console.log(expiryDurationMS);
         this.autoLogoutTimer = setTimeout(() => {
             this.signout();
         }, expiryDurationMS);
