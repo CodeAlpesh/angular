@@ -75,6 +75,11 @@ export class AuthService {
     }
 
     autoLogin() {
+
+        // const helBoy = this.router.routerState.snapshot;
+        // console.log(helBoy.url);
+        // console.log(this.ar.snapshot);
+
         const userData: {
             email: string,
             userId: string,
@@ -94,8 +99,7 @@ export class AuthService {
         
         if(loadedUser.token) {
             this.user.next(loadedUser);
-            this.router.navigate(['/recipes']);
-        
+            // this.router.navigate(['/recipes']);
             const timeSeconds = tokenExpiryDate.getTime() - new Date().getTime(); 
             this.autoLogout(timeSeconds);
         }

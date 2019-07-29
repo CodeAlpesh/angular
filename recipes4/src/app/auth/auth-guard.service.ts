@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate {
         Observable<boolean | UrlTree> | 
         Promise<boolean | UrlTree> {
         
+        console.log(state.url);
         //Router will subscribe to this Observable and will wait for it to get resolved. 
         return this.authService.user.pipe(
             take(1),
