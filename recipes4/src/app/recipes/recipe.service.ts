@@ -96,4 +96,19 @@ export class RecipeService {
         this.slService.addIngredients(ingredients);
     }
 
+    addRecipe(recipe: Recipe) {
+        this.recipesData.recipes.push(recipe);
+        this.recipesChanged.next(this.recipesData.recipes);
+    }
+
+    updateRecipe(index:number, recipe:Recipe) {
+        this.recipesData.recipes[index] = recipe;
+        this.recipesChanged.next(this.recipesData.recipes);
+    }
+
+    deleteRecipe(index:number) {
+        this.recipesData.recipes.splice(index, 1);
+        this.recipesChanged.next(this.recipesData.recipes);
+    }
+
 }
