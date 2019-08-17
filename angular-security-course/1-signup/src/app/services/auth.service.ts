@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, shareReplay } from 'rxjs/operators';
 import { User } from '../model/user.model';
+import { HttpClient } from '@angular/common/http';
 
-const ANONYMOUS_USER: User = {
+export const ANONYMOUS_USER: User = {
   id: undefined,
   email: '',
   userName: 'Guest'
@@ -23,9 +24,16 @@ export class AuthService {
   //to debug ... use tap operator (breakpoint or connsole.log)
   // isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(map( loggedIn => !loggedIn), tap(v => console.log('isLoggedOut$' + v)));
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   signup(email: string, password: string) {
+    return this.http.post<User>('/api/signup', {email, password})
+    .pipe(
+      shareReplay(),
+      tap((user) => {
+        this.loggedInuser.next(user);
+      })
+    )
 
   }
 

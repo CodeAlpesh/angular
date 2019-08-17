@@ -1,4 +1,6 @@
+import { DbUser } from "./dbuser.model";
 
+export const USERS: {[key: number]: DbUser} = {};
 
 export const LESSONS = {
 

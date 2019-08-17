@@ -5,6 +5,7 @@ import {Application} from "express";
 import * as fs from 'fs';
 import * as https from 'https';
 import {readAllLessons} from "./read-all-lessons.route";
+import { createUser } from './signup.route';
 
 const bodyParser = require('body-parser');
 
@@ -25,6 +26,8 @@ const options = commandLineArgs(optionDefinitions);
 app.route('/api/lessons')
     .get(readAllLessons);
 
+app.route('/api/signup')
+    .post(createUser)    
 
 if (options.secure) {
 
