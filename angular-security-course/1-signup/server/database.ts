@@ -8,15 +8,16 @@ class InMemoryDatabase {
     
     userId:number = 0;
 
-    createUser(email: string, password: string): DbUser {
+    createUser(email: string, passwordDigest: string): DbUser {
         this.userId++
         const id = this.userId;
         var user:DbUser = {
             id,
             email,
-            password
+            passwordDigest
         };
         USERS[this.userId] = user;
+        console.log(user);
         return user;
     }
 
