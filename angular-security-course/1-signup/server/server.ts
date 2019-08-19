@@ -1,4 +1,4 @@
-
+const cookieParser = require('cookie-parser')
 
 import * as express from 'express';
 import {Application} from "express";
@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const app: Application = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 const commandLineArgs = require('command-line-args');
 

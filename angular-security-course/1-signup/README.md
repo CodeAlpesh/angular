@@ -123,7 +123,8 @@ console.log(hash);
             }
         )
         ```
-### Need for session:
+## Need for Identifying user on server (each request):
+### Using Session (Stateful way)
 #### TODOs:
 * Once user is created, identify request are coming from same user for authorization etc.
 * Solution: Use cookie backed session implementation to track logged in user.
