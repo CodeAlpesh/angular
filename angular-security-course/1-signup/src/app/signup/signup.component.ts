@@ -20,9 +20,9 @@ export class SignupComponent implements OnInit {
     constructor(private fb: FormBuilder, private authService: AuthService) {
 
         this.form = this.fb.group({
-            email: ['',Validators.required],
-            password: ['',Validators.required],
-            confirm: ['',Validators.required]
+            email: ['test@gmail.com',Validators.required],
+            password: ['Password10',Validators.required],
+            confirm: ['Password10',Validators.required]
         });
 
 
@@ -41,12 +41,9 @@ export class SignupComponent implements OnInit {
                 (user) => {
                     console.log(user);
                 },
-                (err) => {
-                    console.log(err);
-                    this.errors = err.error.error;
-                    this.errors.forEach(err => {
-                        console.log(err + ":" + this.passwordValidationErrorCodes[err])
-                    })
+                (errorResponse) => {
+                    console.log(errorResponse);
+                    this.errors = errorResponse.error.error;
                 }
             )
         }

@@ -1,7 +1,6 @@
 ## Angular Security MasterClass - Web Security Fundamentals Course
 
 ### Inital client / server impl:
-
 #### TODOs:
 * signup & store password [securely??]
 * signin & return basic user details
@@ -124,7 +123,23 @@ console.log(hash);
             }
         )
         ```
+### Need for session:
+#### TODOs:
+* Once user is created, identify request are coming from same user for authorization etc.
+* Solution: Use cookie backed session implementation to track logged in user.
+    * Use crypto.randomBytes for generating session id that is hard to guess 
+        * **Refactoring**: Node callback based API calls will lead to nesting of callbacks.
+        * Use async / await feature of typescript ... async calls will be executed asynchronously but code will not have nesting. With asyc / await code reads like synchronous style code - easy read ... less boiler plate.
+        * Convert callback based call to promise bases using node's util.promisify utility
+        * await can be used in asyc functiosn only.
+        * await is equivalent to .then() 
+        * error can be handles by try/catch or using catch with async function call.
+        * callback will have (err, result) ... format
 
+    * Create Session(sessionid, user, expriesAt/validUntil)
+    * Create SessionStore - SessionID - Session
+    * Response: set session cookie (secure, http only)
+    * Request: read session cooki and set User details accordingly
 
 
 #### Expected Key characteristics
