@@ -17,9 +17,7 @@ export class LessonsService {
 
     loadAllLessons(): Observable<Lesson[]> {
         return this.http.get<any>('/api/lessons').
-        pipe(map((resp) => {
-            return resp.lessons;
-        }));
+        pipe(map(resp => resp.lessons));
     }
 
 

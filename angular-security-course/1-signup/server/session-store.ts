@@ -3,6 +3,7 @@ import { DbUser } from "./dbuser.model";
 
 //TODO: clear expired sessions from memory.
 class SessionStore {
+    
     private sessions: {[key:string]:Session} = {};
 
     createSession(sessionId: string, user: DbUser) {
@@ -10,9 +11,13 @@ class SessionStore {
     }
 
     findUserBySessionId(sessionId: string) : DbUser | undefined {
-        let session:Session = this.sessions[sessionId];
-        let isValidSession = session && session.isValid();
-        return isValidSession ? session.user : undefined;
+        const session:Session = this.sessions[sessionId];
+        return this.isValidSession(sessionId) ? session.user : undefined;
+    }
+
+    isValidSession(sessionId: string): boolean {
+        const session:Session = this.sessions[sessionId];
+        return session && session.isValid();
     }
 }
 
