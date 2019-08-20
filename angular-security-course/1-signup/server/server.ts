@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as https from 'https';
 import {readAllLessons} from "./read-all-lessons.route";
 import { createUser } from './signup.route';
+import { getUser } from './get-user.route';
 
 const bodyParser = require('body-parser');
 
@@ -28,7 +29,10 @@ app.route('/api/lessons')
     .get(readAllLessons);
 
 app.route('/api/signup')
-    .post(createUser)    
+    .post(createUser);
+
+app.route('/api/user')
+    .get(getUser);
 
 if (options.secure) {
 
