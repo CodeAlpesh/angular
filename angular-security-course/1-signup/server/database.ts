@@ -21,6 +21,11 @@ class InMemoryDatabase {
         return user;
     }
 
+    findUserBtEmail(email: string): DbUser | undefined {
+        const allUsers = _.values(USERS);
+        return _.find(allUsers, user => user.email === email);
+    }
+
     readAllLessons() {
         return _.values(LESSONS);
     }

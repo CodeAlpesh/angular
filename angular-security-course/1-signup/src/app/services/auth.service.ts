@@ -42,12 +42,23 @@ export class AuthService {
         this.loggedInuser.next(user);
       })
     )
+  }
 
+  signin(email: string, password: string) {
+    return this.http.post<User>('/api/login', {email, password})
+    .pipe(
+      shareReplay(),
+      tap((user) => {
+        this.loggedInuser.next(user);
+      })
+    )
   }
 
   signout() {
     return this.http.post('/api/logout', {}).
-      pipe(tap((user) => {
+      pipe(
+        shareReplay(),
+        tap((user) => {
         this.loggedInuser.next(ANONYMOUS_USER)
       }));
   }
