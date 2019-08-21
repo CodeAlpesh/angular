@@ -17,7 +17,15 @@ class SessionStore {
 
     isValidSession(sessionId: string): boolean {
         const session:Session = this.sessions[sessionId];
-        return session && session.isValid();
+        const isValid = session && session.isValid();
+        if(!isValid) {
+            this.destroySession(sessionId);
+        }
+        return isValid;
+    }
+
+    destroySession(sessionId: string): void {
+        delete this.sessions[sessionId];
     }
 }
 

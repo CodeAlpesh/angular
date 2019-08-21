@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map, tap, shareReplay, filter } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
+import { map, tap, shareReplay, filter, catchError } from 'rxjs/operators';
 import { User } from '../model/user.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -43,6 +43,13 @@ export class AuthService {
       })
     )
 
+  }
+
+  signout() {
+    return this.http.post('/api/logout', {}).
+      pipe(tap((user) => {
+        this.loggedInuser.next(ANONYMOUS_USER)
+      }));
   }
 
 }
