@@ -12,6 +12,7 @@ export function userLogin(req: Request, res: Response) {
     if(!user) {
         res.sendStatus(403); // Forbidden
     } else {
+        //promise based function call are not lazy. i.e. They will be exceuted even if do not setup then/catch.
         login(user, credentials, res);
     }
 }

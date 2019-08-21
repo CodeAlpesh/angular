@@ -140,6 +140,7 @@ console.log(hash);
         * await is equivalent to .then() 
         * error can be handles by try/catch or using catch with async function call.
         * callback will have (err, result) ... format
+        * promise based function call are not lazy. i.e. They will be exceuted even if do not setup then/catch.
     * Issues with cookie:
         * Cookies are kind of storage mechanism. Can store user preferences etc.
         * XSS - Cross Site Scripting attack - Can be hijacked by malicious code and session can be hijacked.
@@ -154,6 +155,42 @@ console.log(hash);
             * Seems array is valid javascript file ... can be loaded by script tag.
             * Array constructor can be changed at runtime and attacker can do what? Not sure ...
         * This is fixed in mdern browsers.
+    * Signin - In case of authentication failure respond with Http-403 which is Forbidden req - The error handler in subscriber/observer.  
+    ```
+    function f() {
+        const input1= '';
+        const input2= '';
+        //Step1: start with handling response in promise. Build the contract
+        login1(input1, input2).
+            then(() => {
+                //handle return values and response
+            }).
+            catch((err) => {
+                //handle error
+            })
+    }
+    async function login1(input1, input2) {
+        const v = await asyncFnCall();
+        //process v
+        return 'a'
+    }
+    
+    //Step2: convert promise resolution aynch/await and try/catch based implementation
+    function f_v2() {
+        const input1= '';
+        const input2= '';
+        login1(input1, input2);
+    }
+    async function login1_V2(input1, input2) {
+        try {
+            const v = await asyncFnCall();
+            //handle return values and response
+        } catch(err) {
+            //handle error
+        }
+        return 'a'
+    }    
+    ```
 
 
 
