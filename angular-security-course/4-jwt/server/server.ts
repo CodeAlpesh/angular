@@ -9,6 +9,8 @@ import {createUser} from "./create-user.route";
 import {getUser} from "./get-user.route";
 import {logout} from "./logout.route";
 import {login} from "./login.route";
+import { parseJWT } from './parse-jwt.middleware';
+import { isUserAuthenticated } from './auth.middleware';
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
@@ -16,6 +18,7 @@ const cookieParser = require('cookie-parser');
 const app: Application = express();
 
 app.use(cookieParser());
+app.use(parseJWT);
 app.use(bodyParser.json());
 
 
@@ -30,7 +33,7 @@ const options = commandLineArgs(optionDefinitions);
 
 // REST API
 app.route('/api/lessons')
-    .get(readAllLessons);
+    .get(isUserAuthenticated, readAllLessons);
 
 app.route('/api/signup')
     .post(createUser);
@@ -39,7 +42,7 @@ app.route('/api/user')
     .get(getUser);
 
 app.route('/api/logout')
-    .post( logout);
+    .post(isUserAuthenticated, logout);
 
 app.route('/api/login')
     .post(login);

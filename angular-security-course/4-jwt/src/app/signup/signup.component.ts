@@ -36,6 +36,10 @@ export class SignupComponent implements OnInit {
 
     }
 
+    message(errorCode) {
+        const message = this.messagePerErrorCode[errorCode];
+        return message ? message : errorCode;
+    }
 
     signUp() {
         const val = this.form.value;
