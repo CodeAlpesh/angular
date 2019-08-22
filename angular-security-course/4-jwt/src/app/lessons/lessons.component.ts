@@ -1,7 +1,7 @@
 
-import {of as observableOf, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 
-import {catchError} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {LessonsService} from "../services/lessons.service";
 import {Lesson} from "../model/lesson";
@@ -22,7 +22,10 @@ export class LessonsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lessons$ = this.lessonsService.loadAllLessons().pipe(catchError(err => observableOf([])));
+        this.lessons$ = this.lessonsService.loadAllLessons().pipe(
+            tap(data => {
+                console.log(data)
+            }));
         this.isLoggedIn$ = this.authService.isLoggedIn$;
     }
 
