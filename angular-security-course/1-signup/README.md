@@ -191,8 +191,42 @@ console.log(hash);
         return 'a'
     }    
     ```
+### Using JWT (Stateless way)
+* what is it?
+    * Securely share claims between two parties
+    * Self verifiable - 
+        * Do not have to contact Third party server to validate token
+        * Do not have to keep in memory like sessionid/session
+        * Validate Signature to validate the token authenticity
+        * token = HMAC (base64UrlEncode(header) + . + base64UrlEncode(claims) + . + secrect)
+            * base64encode vs base64**Url**Encode
+            * JWT data is not encryptes, its just encoded.
+            * Avoid sending sensitive information in JWT
+        * Secret is shared by sender/reciver(S).
+        * Party having the secret can create new tokens. Change in secret must be notified with everyparty.  
+        * HS256 => HMAC using sha256 
+        * Use asymmetric keys (RS256) to avoid sharing of secret with receivers
+            * Use private key to sign JWT token owned by generator
+            * Use public key to verify token.
+            * Online RSA key generator: https://travistidwell.com/jsencrypt/demo/ 
+        * Can be used to identify usesrs and manage expiration.
+        * 
+    * Online converters do not match it: Explained at : 
+        * https://stackoverflow.com/questions/50121763/how-to-manually-validate-a-jwt-signature-using-online-tools
+        * https://blog.angular-university.io/angular-jwt/
+    * To verify on node console:
+    ```
+    let base64Header = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
+    let base64Payload = "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+    let secret = "hONPMX3tHWIp9jwLDtoCUwFAtH0RwSK6";
+    let base64Signature = crypto.createHmac('sha256', secret).update(base64Header + "." + base64Payload).digest('base64').replace(/\+/g,'-').replace(/\=+$/m,'');
+    console.log(base64Signature);
 
 
+    let onlineCaluclatedHS256 =  "de921a2a4b225fd66ff0983e8566eb0f6e1584bdfa84120568da40e1f571dbd3";
+    let base64hash = Buffer.from(onlineCaluclatedHS256, 'hex').toString('base64').replace(/\+/g,'-').replace(/\=+$/m,'');
+    console.log(base64hash);
+    ```
 
 #### Expected Key characteristics
 ##### Pre-image resistance: 
