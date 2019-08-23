@@ -6,6 +6,7 @@ const util = require('util');
 const crypto = require('crypto');
 import * as jwt from 'jsonwebtoken';
 import * as fs from "fs";
+import * as argon2 from 'argon2';
 import { DbUser } from "./db-user";
 
 
@@ -35,4 +36,8 @@ export async function createSessionToken(user: DbUser) {
 
 export async function decodeJWT(token: string) {
     return jwt.verify(token, RSA_PUBLIC_KEY);
+}
+
+export async function createCsrfToken(sessionID: string) {
+    return argon2.hash(sessionID);
 }

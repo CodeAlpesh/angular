@@ -68,6 +68,50 @@
         );
     }
     ```
+#### XSS
+##### What attacker can do?
+The attacker can perform following from attack-page to target application. 
+* Can submit plain POST request on its own page to any domain using FORM. (Need an attack page).
+    ```
+    <h1>GOTCHA!!!</h1>
+    <form id="csrf-form" method='POST' action='https://localhost:4200/api/logout' >
+    </form>
+    <script>
+        setTimeout(function() {
+            document.getElementById("csrf-form").submit();
+        },2000);
+    </script>
+    ```
+* Can submit get request (Email link)
+> GET api's should not make any change. Restrict it to read only. 
+    * So that attacker can not perform unauthorized GET activities.
 
+##### What are the limitations?
+* Can not make ajax request to another domain - Same Origin Policy - Browser prevents it.
+    * Enable CORS on server to allow it.
+* Even after sending POST request, attacker can not access response. 
+* Can not send JSOn data through POST. The form encoding header (content-type) values are:
+    * application/x-www-form-urlencoded (default)
+    * multipart/form-data
+    * text/plain
+    * none of them are json ... So design endpoints that accept JSON only.
+* Can not access resposne data. Therefor its called BlindAttack.
+* Cannot send custom headers
+* Any deviation from allowed restricted request will warrant an HHTP OPTIONS request - preflight to confirm whether its allowed or not. UnAuthorised senders will be denied.
+    * What triggers pre-flight: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Preflighted_requests
+    * Headers ... 
+    ```
+    Access-Control-Allow-Origin
+    Access-Control-Allow-Credentials
+    Access-Control-Allow-Headers
+    Access-Control-Allow-Methods
+    ...
+    ```
 
-
+##### What sis the defence?
+> Double Submit Cookie Defense (stateles defense)
+* Validate that request is coming from trusted header.
+    * Server sends cryptographic random value - non guesable as CSRF cookie.
+    * Send that value as CSRF header to request.
+    * The header should not be autoforwarded like cookie
+    * Compare cookievalue and header value of CSRF token to validate access.

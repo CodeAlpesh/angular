@@ -11,6 +11,7 @@ import {logout} from "./logout.route";
 import {login} from "./login.route";
 import { parseJWT } from './parse-jwt.middleware';
 import { isUserAuthenticated } from './auth.middleware';
+import { checkXsrfToken } from './check-csrftoken.middleware';
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
@@ -42,7 +43,7 @@ app.route('/api/user')
     .get(getUser);
 
 app.route('/api/logout')
-    .post(isUserAuthenticated, logout);
+    .post(isUserAuthenticated, checkXsrfToken, logout);
 
 app.route('/api/login')
     .post(login);
